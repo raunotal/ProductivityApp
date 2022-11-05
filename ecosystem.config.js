@@ -6,7 +6,7 @@ module.exports = {
       ref: "origin/main",
       repo: "git@github.com:raunotal/ProductivityApp.git",
       ssh_options: ["ForwardAgent=yes"],
-      path: "/data01/virt114220/domeenid/www.retseptipank.ee/htdocs",
+      path: "/data01/virt114220/domeenid/www.retseptipank.ee/deploy",
       "pre-deploy-local": "ssh-add",
       "post-deploy":
         "yarn && yarn build && pm2 reload /var/www/singleton.ee/current/ecosystem.config.js --env development",
