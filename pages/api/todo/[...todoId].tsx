@@ -22,13 +22,9 @@ const handler = async (
   }
 
   if (req.method === "PUT") {
-    console.log("req.body", req.body)
     const todo: UpdateTodoDTO = JSON.parse(req.body);
-    console.log("currentTodo.progressInSeconds", currentTodo.progressInSeconds || 0)
-    console.log("session", todo.sessionDuration)
     const progressInSecondsTotal =
     (currentTodo.progressInSeconds || 0) + todo.sessionDuration;
-    console.log("progressInSecondsTotal", progressInSecondsTotal);
     const updatedTodo = await prisma.toDo.update({
       where: { id: todo.id },
       data: { progressInSeconds: progressInSecondsTotal },

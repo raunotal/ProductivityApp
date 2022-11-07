@@ -28,7 +28,6 @@ const TodoRow = (props: TodoRowProps) => {
     };
   }, [isActive, setActiveId, todo.id]);
 
-  console.log("RENDER");
   const activationToggleHandler = () => {
     const callbackInput = isActive ? -1 : todo.id;
     setActiveId(callbackInput);

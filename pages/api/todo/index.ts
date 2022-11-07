@@ -15,7 +15,6 @@ const handler = async (
   res: NextApiResponse<ToDo | ToDo[] | Message>
 ) => {
   if (req.method === "POST") {
-    console.log("req.body", req.body);
     const todoDTO: TodoDTO = JSON.parse(req.body);
     if (!todoDTO.name || todoDTO.name === "") {
       return res.status(400).json({ message: "No name" });

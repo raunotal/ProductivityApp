@@ -29,8 +29,6 @@ async function updateTodo(todo: UpdateTodoDTO) {
 const updateTodoHandler = (activeTodo: StoragedTodo) => {
   const currentTimestamp = Math.floor(Date.now() / 1000);
   const todoTimestamp = Math.floor(new Date(activeTodo.activatedDateTime).getTime() / 1000);
-  console.log("currentTimestamp", currentTimestamp);
-  console.log("todoTimestamp", todoTimestamp);
   const updatedTodo = {
     id: activeTodo.todo.id,
     sessionDuration: currentTimestamp - todoTimestamp,
@@ -41,8 +39,6 @@ const updateTodoHandler = (activeTodo: StoragedTodo) => {
 const TodosList = (props: TodoListProps) => {
   const { todos } = props;
   const [activeTodoId, setActiveTodoId] = useState(-1);
-  console.log("todos", todos);
-
   const setActiveTodoItemHandler = (id: number) => {
     setActiveTodoId(id);
 
