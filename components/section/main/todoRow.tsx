@@ -1,7 +1,7 @@
 import { ToDo } from "@prisma/client";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import { fromSecondsToString } from "../../utils/helpers";
+import { fromSecondsToString } from "../../../utils/helpers";
 
 interface TodoRowProps {
   todo: ToDo;

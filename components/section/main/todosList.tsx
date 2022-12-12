@@ -1,9 +1,9 @@
 import { ToDo } from "@prisma/client";
 import { useState } from "react";
-import { StoragedTodo } from "../../types/storagedTodo";
-import { TodoDTO } from "../../types/todoDTO";
-import { UpdateTodoDTO } from "../../types/updateTodoDTO";
-import { fromSecondsToString } from "../../utils/helpers";
+import { StoragedTodo } from "../../../types/storagedTodo";
+import { TodoDTO } from "../../../types/todoDTO";
+import { UpdateTodoDTO } from "../../../types/updateTodoDTO";
+import { fromSecondsToString } from "../../../utils/helpers";
 import TodoRow from "./todoRow";
 
 interface TodoListProps {

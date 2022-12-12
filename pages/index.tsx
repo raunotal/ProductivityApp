@@ -1,23 +1,17 @@
-import { PrismaClient, ToDo } from "@prisma/client";
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 import GenericLayout from "../components/layout/genericLayout";
-import Main from "../components/section/main";
+import Main from "../components/section/main/main";
+import Welcome from "../components/section/welcome/welcome";
 
-// const prisma = new PrismaClient();
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  // const todos: ToDo[] = await prisma.toDo.findMany();
-  return {
-    props: {
-      todos: [],
-    },
-  };
-};
-
-const Home: NextPage<{ todos: ToDo[] }> = ({ todos }) => {
+const Home: NextPage = () => {
+  const [todos, setTodos] = useState([]);
+  const { data: session } = useSession();
   return (
     <GenericLayout>
-      <Main {...{ todos }} />
+      {session && <Main {...{ todos }} />}
+      {!session && <Welcome />}
     </GenericLayout>
   );
 };

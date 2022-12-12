@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import Footer from "./footer";
 import Header from "./header";
 
@@ -6,12 +7,15 @@ interface GenericLayoutProps {
 }
 
 const GenericLayout = (props: GenericLayoutProps) => {
+  const { data: session, status } = useSession();
+
+  const isLoggedIn = status === "authenticated";
   return (
-    <>
-      <Header />
-      {props.children}
+    <div className="d-flex flex-column h-100">
+      <Header {...{ session, status }} />
+      <div className="flex-grow-1">{props.children}</div>
       <Footer />
-    </>
+    </div>
   );
 };
 

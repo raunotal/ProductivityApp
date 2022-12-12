@@ -1,7 +1,7 @@
 import { ToDo } from "@prisma/client";
 import { useState, ChangeEvent, SyntheticEvent } from "react";
-import { TodoDTO } from "../../types/todoDTO";
-import { fromMinutesToString } from "../../utils/helpers";
+import { TodoDTO } from "../../../types/todoDTO";
+import { fromMinutesToString } from "../../../utils/helpers";
 
 async function saveTodo(todo: TodoDTO) {
   const response = await fetch("/api/todo", {
