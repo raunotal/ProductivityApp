@@ -1,22 +1,37 @@
 import { ToDo } from "@prisma/client";
+import { verify } from "jsonwebtoken";
+import { Session } from "next-auth";
 import { useState, ChangeEvent, SyntheticEvent } from "react";
 import { TodoDTO } from "../../../types/todoDTO";
 import { fromMinutesToString } from "../../../utils/helpers";
 
-async function saveTodo(todo: TodoDTO) {
+interface IAddNewTodo {
+  session: Session;
+  onTodoAdd: (todo: ToDo) => void;
+}
+
+async function saveTodo(name: string, totalTime: number, session: Session) {
+  const toDoDTO: TodoDTO = {
+    name,
+    totalTimeInSeconds: totalTime,
+  };
   const response = await fetch("/api/todo", {
     method: "POST",
-    body: JSON.stringify(todo),
+    body: JSON.stringify(toDoDTO),
+    headers: {
+      Authorization: `Bearer ${session.token}`,
+    },
   });
 
   if (!response.ok) {
-    throw new Error(response.statusText);
+    console.log("response", response);
   }
 
   return await response.json();
 }
 
-const AddNewTodo = () => {
+const AddNewTodo = (props: IAddNewTodo) => {
+  const { session, onTodoAdd } = props;
   const [todoTimeMinutes, setTodoTimeMinutes] = useState(1);
   const [todoName, setTodoName] = useState("");
 
@@ -24,20 +39,18 @@ const AddNewTodo = () => {
     setTodoTimeMinutes(e.target.valueAsNumber);
   };
 
-  const todoSaveHandler = (e: SyntheticEvent) => {
+  const addTodoHandler = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const todo: TodoDTO = {
-      name: todoName,
-      totalTimeInSeconds: todoTimeMinutes * 60,
-    };
-    saveTodo(todo);
+    const totalTimeInSeconds = todoTimeMinutes * 60;
+    const response = await saveTodo(todoName, totalTimeInSeconds, session);
+    onTodoAdd(response);
   };
 
   const durationText = fromMinutesToString(todoTimeMinutes);
   return (
     <div className="row mt-5">
       <div className="col">
-        <form onSubmit={todoSaveHandler}>
+        <form onSubmit={addTodoHandler}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
               Tegevus

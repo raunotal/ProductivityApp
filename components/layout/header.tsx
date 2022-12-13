@@ -10,7 +10,6 @@ interface IHeaderProps {
 const Header = (props: IHeaderProps) => {
   const { session, status } = props;
   const isLoggedIn = status === "authenticated";
-  console.log("session", session);
   return (
     <header className="p-3 text-bg-dark">
       <div className="container">

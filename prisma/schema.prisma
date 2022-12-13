@@ -12,7 +12,17 @@ datasource db {
 
 model ToDo {
   id Int @id @default(autoincrement())
+  userId String @db.VarChar(256)
   name String @db.VarChar(256)
   totalTime Int 
-  progressInSeconds Int?
+  progressInSeconds Int @default(0)
+  toDoLogs TodoLog[]
+}
+
+model TodoLog {
+  id Int @id @default(autoincrement())
+  toDo ToDo @relation(fields: [toDoId], references: [id])
+  toDoId Int
+  start DateTime
+  end DateTime?
 }
