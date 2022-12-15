@@ -11,6 +11,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let todos = [];
 
   if (session?.token) {
+    console.log("session?.token", session?.token)
     todos = await TodosClientService.getTodos(session);
   }
 
