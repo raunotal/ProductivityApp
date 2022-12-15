@@ -1,10 +1,11 @@
 import { ToDo } from "@prisma/client";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
+import { TodoDTO } from "../../../types/todoDTO";
 import { fromSecondsToString } from "../../../utils/helpers";
 
 interface TodoRowProps {
-  todo: ToDo;
+  todo: TodoDTO;
   isActive: boolean;
   setActiveId: (id: number) => void;
 }
@@ -33,7 +34,7 @@ const TodoRow = (props: TodoRowProps) => {
     setActiveId(callbackInput);
   };
 
-  const timeEveryDay = fromSecondsToString(todo.totalTime);
+  const timeEveryDay = fromSecondsToString(todo.totalTimeInSeconds);
   const timeSoFar = todo.progressInSeconds
     ? fromSecondsToString(todo.progressInSeconds + timer)
     : 0;

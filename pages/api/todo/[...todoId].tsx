@@ -41,8 +41,7 @@ const callback = async (
     });
     return res.status(201).json(updatedTodo);
   }
-
-  res.status(405).json({ message: "Method not allowed" });
+  return res.status(405).json({ message: "Method not allowed" });
 };
 
 const handler = async (

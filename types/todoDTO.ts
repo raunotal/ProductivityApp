@@ -3,6 +3,7 @@ export type TodoDTO = {
   name: string;
   totalTimeInSeconds: number;
   progressInSeconds: number;
+  isRunning: boolean;
 };
 
 export type NewTodoDTO = {
@@ -14,4 +15,4 @@ export type UpdateTodoDTO = {
   id: number;
   isRunning: boolean;
   dateTime: Date;
-};
+}

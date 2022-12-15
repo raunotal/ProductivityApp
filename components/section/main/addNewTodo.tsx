@@ -2,13 +2,13 @@ import { ToDo } from "@prisma/client";
 import { verify } from "jsonwebtoken";
 import { Session } from "next-auth";
 import { useState, ChangeEvent, SyntheticEvent } from "react";
-import TodosService from "../../../service/todoService";
-import { NewTodoDTO } from "../../../types/todoDTO";
+import TodosClientService from "../../../service/todoClientService";
+import { NewTodoDTO, TodoDTO } from "../../../types/todoDTO";
 import { fromMinutesToString } from "../../../utils/helpers";
 
 interface IAddNewTodo {
   session: Session;
-  onTodoAdd: (todo: ToDo) => void;
+  onTodoAdd: (todo: TodoDTO) => void;
 }
 
 async function saveTodo(
@@ -20,7 +20,7 @@ async function saveTodo(
     name,
     totalTimeInSeconds,
   };
-  return await TodosService.newTodo(toDoDTO, session);
+  return await TodosClientService.newTodo(toDoDTO, session);
 }
 
 const AddNewTodo = (props: IAddNewTodo) => {

@@ -2,6 +2,7 @@ import { ToDo } from "@prisma/client";
 import { verify } from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { SessionToken } from "../types/session";
+import { TodoDTO } from "../types/todoDTO";
 
 export type Message = {
   message: string;
@@ -9,10 +10,10 @@ export type Message = {
 
 const apiMiddleware = async (
   req: NextApiRequest,
-  res: NextApiResponse<ToDo | ToDo[] | Message>,
+  res: NextApiResponse<ToDo | TodoDTO | TodoDTO[] | Message>,
   callback: (
     req: NextApiRequest,
-    res: NextApiResponse<ToDo | ToDo[] | Message>,
+    res: NextApiResponse<ToDo | TodoDTO | TodoDTO[] | Message>,
     userId: string
   ) => Promise<void>
 ) => {
@@ -29,11 +30,8 @@ const apiMiddleware = async (
     ) as SessionToken;
     await callback(req, res, userId);
   } catch (e) {
-    res.statusCode = 400;
-    return res.json({ message: "Invalid request" });
+    return res.status(400).json({ message: "Invalid request" });
   }
-
-  res.status(405).json({ message: "Method not allowed" });
 };
 
 export default apiMiddleware;

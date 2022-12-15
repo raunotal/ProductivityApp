@@ -1,23 +1,16 @@
-import { ToDo } from "@prisma/client";
+import { Session } from "next-auth";
 import { useState } from "react";
-import { StoragedTodo } from "../../../types/storagedTodo";
-import { NewTodoDTO } from "../../../types/todoDTO";
-import { UpdateTodoDTO } from "../../../types/updateTodoDTO";
-import { fromSecondsToString } from "../../../utils/helpers";
+import TodosClientService from "../../../service/todoClientService";
+import { TodoDTO, UpdateTodoDTO } from "../../../types/todoDTO";
 import TodoRow from "./todoRow";
 
 interface TodoListProps {
-  todos: ToDo[];
+  todos: TodoDTO[];
+  session: Session;
 }
 
-async function updateTodo(todo: UpdateTodoDTO) {
-  const response = await fetch(`/api/todo/${todo.id}`, {
-    method: "PUT",
-    body: JSON.stringify({
-      id: todo.id,
-      sessionDuration: todo.sessionDuration,
-    }),
-  });
+async function updateTodo(todo: UpdateTodoDTO, session: Session) {
+  const response = await TodosClientService.updateTodo(todo, session);
 
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -26,20 +19,8 @@ async function updateTodo(todo: UpdateTodoDTO) {
   return await response.json();
 }
 
-const updateTodoHandler = (activeTodo: StoragedTodo) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000);
-  const todoTimestamp = Math.floor(
-    new Date(activeTodo.activatedDateTime).getTime() / 1000
-  );
-  const updatedTodo = {
-    id: activeTodo.todo.id,
-    sessionDuration: currentTimestamp - todoTimestamp,
-  };
-  updateTodo(updatedTodo);
-};
-
 const TodosList = (props: TodoListProps) => {
-  const { todos } = props;
+  const { todos, session } = props;
   const [activeTodoId, setActiveTodoId] = useState(-1);
 
   const setActiveTodoItemHandler = (id: number) => {

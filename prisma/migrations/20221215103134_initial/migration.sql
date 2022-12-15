@@ -2,8 +2,7 @@
 CREATE TABLE `ToDo` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(256) NOT NULL,
-    `totalTime` INTEGER NOT NULL,
-    `progressInSeconds` INTEGER NOT NULL DEFAULT 0,
+    `totalTimeInSeconds` INTEGER NOT NULL,
     `userId` VARCHAR(256) NOT NULL,
 
     PRIMARY KEY (`id`)
