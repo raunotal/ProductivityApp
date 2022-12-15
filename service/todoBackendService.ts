@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../config/prisma";
 import { TodoDTO, UpdateTodoDTO } from "../types/todoDTO";
-
-const prisma = new PrismaClient();
 
 const getTodos = async (userId: string): Promise<TodoDTO[]> => {
   const result: TodoDTO[] = [];

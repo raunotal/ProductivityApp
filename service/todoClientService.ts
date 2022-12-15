@@ -26,10 +26,20 @@ const updateTodo = async (todo: UpdateTodoDTO, session: Session) => {
   return await res.json();
 };
 
+const updateTodos = async (
+  stoppedTodo: UpdateTodoDTO,
+  startedTodo: UpdateTodoDTO,
+  session: Session
+) => {
+  await updateTodo(stoppedTodo, session);
+  await updateTodo(startedTodo, session);
+};
+
 const TodosClientService = {
   getTodos,
   newTodo,
   updateTodo,
+  updateTodos,
 };
 
 export default TodosClientService;

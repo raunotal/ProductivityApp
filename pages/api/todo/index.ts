@@ -1,12 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { ToDo } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
 import { NewTodoDTO, TodoDTO } from "../../../types/todoDTO";
 import apiMiddleware, { Message } from "../../../service/apiMiddleware";
 import TodoBackendService from "../../../service/todoBackendService";
-
-const prisma = new PrismaClient();
+import { prisma } from "../../../config/prisma";
 
 const callback = async (
   req: NextApiRequest,

@@ -1,7 +1,5 @@
-import { PrismaClient, ToDo } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
-import { useState } from "react";
 import GenericLayout from "../components/layout/genericLayout";
 import Main from "../components/section/main/main";
 import Welcome from "../components/section/welcome/welcome";

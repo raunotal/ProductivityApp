@@ -28,11 +28,11 @@ const TodosList = (props: TodoListProps) => {
       return setActiveTodoId(-1);
     }
 
-    await TodosClientService.updateTodo(
+    await TodosClientService.updateTodos(
       { id: activeTodoId, isRunning: false },
+      { id, isRunning },
       session
     );
-    await TodosClientService.updateTodo({ id, isRunning }, session);
     setActiveTodoId(id);
     return;
   };
