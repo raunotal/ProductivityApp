@@ -11,7 +11,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let todos = [];
 
   if (session?.token) {
-    console.log("session?.token", session?.token)
     todos = await TodosClientService.getTodos(session);
   }
 
@@ -25,7 +24,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Home: NextPage<{ todos: TodoDTO[] }> = (props) => {
   const { todos } = props;
   const { data: session } = useSession();
-  console.log("todos", todos)
   return (
     <GenericLayout>
       {session && <Main {...{ todos, session }} />}
