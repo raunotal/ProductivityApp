@@ -46,8 +46,6 @@ const getTodo = async (id: number, userId: string) => {
 };
 
 const updateTodo = async (todo: UpdateTodoDTO, userId: string) => {
-  console.log("==========================");
-  console.log("todo", todo);
   const dateStartOfDay = new Date();
   dateStartOfDay.setUTCHours(0, 0, 0, 0);
 
@@ -57,8 +55,6 @@ const updateTodo = async (todo: UpdateTodoDTO, userId: string) => {
   });
 
   const lastTodoLog = todoLogs[0];
-
-  console.log("lastTodoLog", lastTodoLog);
 
   if (!lastTodoLog || lastTodoLog.end) {
     return await prisma.todoLog.create({

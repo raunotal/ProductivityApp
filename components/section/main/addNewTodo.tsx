@@ -36,7 +36,6 @@ const AddNewTodo = (props: IAddNewTodo) => {
     e.preventDefault();
     const totalTimeInSeconds = todoTimeMinutes * 60;
     const todo = await saveTodo(todoName, totalTimeInSeconds, session);
-    console.log("response", todo)
     onTodoAdd(todo);
   };
 
