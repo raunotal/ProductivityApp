@@ -29,7 +29,7 @@ const callback = async (
     }
 
     const todo: UpdateTodoDTO = JSON.parse(req.body);
-    await TodoBackendService.updateTodo(todo);
+    await TodoBackendService.updateTodo(todo, userId);
     return res.status(201).json({message: "Updated!"});
   }
   return res.status(405).json({ message: "Method not allowed" });

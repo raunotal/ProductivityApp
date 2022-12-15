@@ -14,13 +14,14 @@ const getTodos = async (userId: string): Promise<TodoDTO[]> => {
     let progressInSeconds = 0;
 
     for (const todoLog of todo.toDoLogs) {
+      let progressMilliSeconds = 0;
       if (!todoLog.end) {
         isRunning = true;
-        continue;
+        progressMilliSeconds = new Date().getTime() - todoLog.start.getTime();
+      } else {
+        progressMilliSeconds = todoLog.end.getTime() - todoLog.start.getTime();
       }
 
-      const progressMilliSeconds =
-        todoLog.end.getTime() - todoLog.start.getTime();
       const progressSeconds = Math.round(progressMilliSeconds / 1000);
       progressInSeconds += progressSeconds;
     }
@@ -44,20 +45,37 @@ const getTodo = async (id: number, userId: string) => {
   });
 };
 
-const updateTodo = async (todo: UpdateTodoDTO) => {
-  console.log("==========================")
-  console.log("todo", todo)
+const updateTodo = async (todo: UpdateTodoDTO, userId: string) => {
+  console.log("==========================");
+  console.log("todo", todo);
   const dateStartOfDay = new Date();
   dateStartOfDay.setUTCHours(0, 0, 0, 0);
+
   const todoLogs = await prisma.todoLog.findMany({
     where: { start: { gte: dateStartOfDay }, toDoId: todo.id },
     orderBy: { start: "desc" },
   });
-  if (todo.isRunning) {
-    console.log("todoLogs - isRunning", todoLogs);
-  } else {
-    // await prisma.todoLog.upsert({where: {id: t}})
-    console.log("todoLogs - isRunning NOT", todoLogs);
+
+  const lastTodoLog = todoLogs[0];
+
+  console.log("lastTodoLog", lastTodoLog);
+
+  if (!lastTodoLog || lastTodoLog.end) {
+    return await prisma.todoLog.create({
+      data: {
+        toDoId: todo.id,
+        start: new Date(),
+      },
+    });
+  }
+
+  if (!lastTodoLog.end) {
+    return await prisma.todoLog.update({
+      where: { id: lastTodoLog.id },
+      data: {
+        end: new Date(),
+      },
+    });
   }
 };
 

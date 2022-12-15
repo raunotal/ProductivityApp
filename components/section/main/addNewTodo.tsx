@@ -35,8 +35,9 @@ const AddNewTodo = (props: IAddNewTodo) => {
   const addTodoHandler = async (e: SyntheticEvent) => {
     e.preventDefault();
     const totalTimeInSeconds = todoTimeMinutes * 60;
-    const response = await saveTodo(todoName, totalTimeInSeconds, session);
-    onTodoAdd(response);
+    const todo = await saveTodo(todoName, totalTimeInSeconds, session);
+    console.log("response", todo)
+    onTodoAdd(todo);
   };
 
   const durationText = fromMinutesToString(todoTimeMinutes);

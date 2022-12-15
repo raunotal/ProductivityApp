@@ -16,19 +16,9 @@ const Main = (props: MainProps) => {
   const [todoList, setTodoList] = useState(todos);
 
   const todoAddHandler = async (newTodo: TodoDTO) => {
-    console.log("todo", newTodo);
-    let stoppedTodo: TodoDTO;
     setTodoList((prevState) => {
-      const updatedState = [...prevState];
-      const indexOfTodo = updatedState.findIndex((t) => t.isRunning === true)!;
-      updatedState[indexOfTodo] = {
-        ...updatedState[indexOfTodo],
-        isRunning: false,
-      };
-      stoppedTodo = updatedState[indexOfTodo];
-      return [...updatedState, newTodo];
+      return [...prevState, newTodo];
     });
-    await TodosClientService.updateTodos(stoppedTodo!, newTodo, session);
   };
 
   return (

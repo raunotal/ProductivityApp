@@ -24,17 +24,24 @@ const TodosList = (props: TodoListProps) => {
 
   const setActiveTodoItemHandler = async (id: number, isRunning: boolean) => {
     if (activeTodoId === id) {
+      console.log("activeTodoId === id");
       await TodosClientService.updateTodo({ id, isRunning }, session);
       return setActiveTodoId(-1);
     }
 
-    await TodosClientService.updateTodos(
-      { id: activeTodoId, isRunning: false },
-      { id, isRunning },
-      session
-    );
-    setActiveTodoId(id);
-    return;
+    if (activeTodoId === -1 && isRunning) {
+      console.log("if");
+      await TodosClientService.updateTodo({ id, isRunning }, session);
+    } else {
+      console.log("else");
+      await TodosClientService.updateTodos(
+        { id: activeTodoId, isRunning: false },
+        { id, isRunning },
+        session
+      );
+    }
+
+    return setActiveTodoId(id);
   };
 
   return (

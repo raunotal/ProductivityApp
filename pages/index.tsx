@@ -24,6 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Home: NextPage<{ todos: TodoDTO[] }> = (props) => {
   const { todos } = props;
   const { data: session } = useSession();
+  console.log("todos", todos)
   return (
     <GenericLayout>
       {session && <Main {...{ todos, session }} />}
