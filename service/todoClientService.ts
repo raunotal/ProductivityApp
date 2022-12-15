@@ -18,7 +18,7 @@ const newTodo = async (todo: NewTodoDTO, session: Session) => {
 };
 
 const updateTodo = async (todo: UpdateTodoDTO, session: Session) => {
-  const res = await fetch(`${process.env.HOST}/api/todo/${todo.id}`, {
+  const res = await fetch(`/api/todo/${todo.id}`, {
     method: "PUT",
     headers: new Headers({ Authorization: `Bearer ${session.token}` }),
     body: JSON.stringify(todo),

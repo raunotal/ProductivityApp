@@ -7,7 +7,7 @@ import { fromSecondsToString } from "../../../utils/helpers";
 interface TodoRowProps {
   todo: TodoDTO;
   isActive: boolean;
-  setActiveId: (id: number) => void;
+  setActiveId: (id: number, isRunning: boolean) => void;
 }
 
 const TodoRow = (props: TodoRowProps) => {
@@ -30,14 +30,12 @@ const TodoRow = (props: TodoRowProps) => {
   }, [isActive, setActiveId, todo.id]);
 
   const activationToggleHandler = () => {
-    const callbackInput = isActive ? -1 : todo.id;
-    setActiveId(callbackInput);
+    setActiveId(todo.id, !isActive);
   };
 
   const timeEveryDay = fromSecondsToString(todo.totalTimeInSeconds);
-  const timeSoFar = todo.progressInSeconds
-    ? fromSecondsToString(todo.progressInSeconds + timer)
-    : 0;
+  let timeSoFar = fromSecondsToString(todo.progressInSeconds + timer);
+
   return (
     <tr>
       <th scope="row">{todo.name}</th>

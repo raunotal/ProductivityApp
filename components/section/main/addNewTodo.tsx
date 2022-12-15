@@ -25,7 +25,7 @@ async function saveTodo(
 
 const AddNewTodo = (props: IAddNewTodo) => {
   const { session, onTodoAdd } = props;
-  const [todoTimeMinutes, setTodoTimeMinutes] = useState(1);
+  const [todoTimeMinutes, setTodoTimeMinutes] = useState(5);
   const [todoName, setTodoName] = useState("");
 
   const durationChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {

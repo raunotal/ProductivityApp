@@ -1,5 +1,5 @@
 import { Session } from "next-auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodosClientService from "../../../service/todoClientService";
 import { TodoDTO, UpdateTodoDTO } from "../../../types/todoDTO";
 import TodoRow from "./todoRow";
@@ -9,25 +9,32 @@ interface TodoListProps {
   session: Session;
 }
 
-async function updateTodo(todo: UpdateTodoDTO, session: Session) {
-  const response = await TodosClientService.updateTodo(todo, session);
-
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return await response.json();
-}
-
 const TodosList = (props: TodoListProps) => {
   const { todos, session } = props;
   const [activeTodoId, setActiveTodoId] = useState(-1);
 
-  const setActiveTodoItemHandler = (id: number) => {
-    setActiveTodoId(id);
-
-    if (id !== -1) {
+  useEffect(() => {
+    for (const todo of todos) {
+      if (todo.isRunning) {
+        setActiveTodoId(todo.id);
+        break;
+      }
     }
+  }, [todos]);
+
+  const setActiveTodoItemHandler = async (id: number, isRunning: boolean) => {
+    if (activeTodoId === id) {
+      await TodosClientService.updateTodo({ id, isRunning }, session);
+      return setActiveTodoId(-1);
+    }
+
+    await TodosClientService.updateTodo(
+      { id: activeTodoId, isRunning: false },
+      session
+    );
+    await TodosClientService.updateTodo({ id, isRunning }, session);
+    setActiveTodoId(id);
+    return;
   };
 
   return (

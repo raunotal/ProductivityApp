@@ -14,5 +14,4 @@ export type NewTodoDTO = {
 export type UpdateTodoDTO = {
   id: number;
   isRunning: boolean;
-  dateTime: Date;
 }

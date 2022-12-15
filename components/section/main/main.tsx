@@ -15,7 +15,12 @@ const Main = (props: MainProps) => {
   const [todoList, setTodoList] = useState(todos);
 
   const todoAddHandler = (todo: TodoDTO) => {
-    setTodoList((prevState) => [todo, ...prevState]);
+    console.log("todo", todo);
+    setTodoList((prevState) => {
+      const updatedState = [...prevState];
+      updatedState.forEach((t) => (t.isRunning = false));
+      return [...updatedState, todo];
+    });
   };
   return (
     <div className="container">

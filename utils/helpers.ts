@@ -1,4 +1,7 @@
 export const fromSecondsToString = (seconds: number) => {
+  if (seconds < 60) {
+    return `${seconds}s`
+  }
   const todoTimeMinutes = Math.round(seconds / 60);
   return fromMinutesToString(todoTimeMinutes);
 };

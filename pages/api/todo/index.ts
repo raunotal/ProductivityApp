@@ -30,7 +30,14 @@ const callback = async (
         totalTimeInSeconds: todoDTO.totalTimeInSeconds,
       },
     });
-    return res.json(savedTodo);
+
+    const result: TodoDTO = {
+      ...savedTodo,
+      progressInSeconds: 0,
+      isRunning: true,
+    };
+
+    return res.json(result);
   }
 
   if (req.method === "GET") {
