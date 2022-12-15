@@ -6,12 +6,12 @@ module.exports = {
       ref: "origin/main",
       repo: "git@github.com:raunotal/ProductivityApp.git",
       ssh_options: ["ForwardAgent=yes"],
-      path: "/data01/virt114220/domeenid/www.retseptipank.ee/deploy",
+      path: "/data01/virt114220/domeenid/www.retseptipank.ee/deploy/prodApp",
       "pre-deploy-local": "ssh-add",
       "post-deploy":
-        "NODE_ENV=production yarn && yarn build && pm2 reload /var/www/singleton.ee/current/ecosystem.config.js --env development",
+        "npm --name prodApp && npm start && pm2 reload /data01/virt114220/domeenid/www.retseptipank.ee/deploy/prodApp/current/ecosystem.config.js",
       env: {
-        PORT: 3000,
+        NODE_ENV: "production",
       },
     },
   },
