@@ -14,7 +14,8 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ToDo | ToDo[] | Message>
 ) => {
-  const { todoId } = req.query;
+  const { query, headers } = req;
+  const { todoId } = query;
   const currentTodo = await prisma.toDo.findFirst({ where: { id: +todoId! } });
 
   if (!currentTodo) {

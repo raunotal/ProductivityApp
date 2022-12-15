@@ -3,30 +3,15 @@ import { ToDo } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { TodoDTO } from "../../../types/todoDTO";
-import { verify } from "jsonwebtoken";
-import { SessionToken } from "../../../types/session";
+import apiMiddleware, { Message } from "../../../service/apiMiddleware";
 
 const prisma = new PrismaClient();
 
-type Message = {
-  message: string;
-};
-
-const handler = async (
+const callback = async (
   req: NextApiRequest,
-  res: NextApiResponse<ToDo | ToDo[] | Message>
+  res: NextApiResponse<ToDo | ToDo[] | Message>,
+  userId: string
 ) => {
-  const { headers, body } = req;
-  console.log("body", body);
-
-  if (!headers.authorization) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  const { uid: userId } = verify(
-    headers.authorization.replace("Bearer ", ""),
-    process.env.JWT_SECRET!
-  ) as SessionToken;
 
   if (req.method === "POST") {
     const todoDTO: TodoDTO = JSON.parse(req.body);
@@ -49,10 +34,18 @@ const handler = async (
   }
 
   if (req.method === "GET") {
-    const todos: ToDo[] = await prisma.toDo.findMany();
+    const todos: ToDo[] = await prisma.toDo.findMany({
+      where: { userId: { equals: userId } },
+    });
     return res.status(200).json(todos);
   }
-  res.status(405).json({ message: "Method not allowed" });
+};
+
+const handler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<ToDo | ToDo[] | Message>
+) => {
+  await apiMiddleware(req, res, callback);
 };
 
 export default handler;

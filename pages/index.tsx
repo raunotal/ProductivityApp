@@ -6,11 +6,17 @@ import GenericLayout from "../components/layout/genericLayout";
 import Main from "../components/section/main/main";
 import Welcome from "../components/section/welcome/welcome";
 
-const prisma = new PrismaClient();
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const todos: ToDo[] = await prisma.toDo.findMany();
   const session = await getSession(context);
+  let todos = [];
+
+  if (session?.token) {
+    const res = await fetch(`${process.env.HOST}/api/todo`, {
+      headers: new Headers({ Authorization: `Bearer ${session?.token}` }),
+    });
+    todos = await res.json();
+  }
+
   return {
     props: {
       todos,

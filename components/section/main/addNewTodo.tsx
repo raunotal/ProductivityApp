@@ -22,11 +22,6 @@ async function saveTodo(name: string, totalTime: number, session: Session) {
       Authorization: `Bearer ${session.token}`,
     },
   });
-
-  if (!response.ok) {
-    console.log("response", response);
-  }
-
   return await response.json();
 }
 
@@ -74,9 +69,9 @@ const AddNewTodo = (props: IAddNewTodo) => {
               className="form-range"
               id="time"
               name="time"
-              min="1"
+              min="5"
               max="360"
-              step="1"
+              step="5"
               onChange={durationChangeHandler}
               value={todoTimeMinutes}
             />

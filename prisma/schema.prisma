@@ -12,10 +12,10 @@ datasource db {
 
 model ToDo {
   id Int @id @default(autoincrement())
-  userId String @db.VarChar(256)
   name String @db.VarChar(256)
   totalTime Int 
   progressInSeconds Int @default(0)
+  userId String @db.VarChar(256)
   toDoLogs TodoLog[]
 }
 
