@@ -2,7 +2,8 @@ import { ToDo } from "@prisma/client";
 import { verify } from "jsonwebtoken";
 import { Session } from "next-auth";
 import { useState, ChangeEvent, SyntheticEvent } from "react";
-import { TodoDTO } from "../../../types/todoDTO";
+import TodosService from "../../../service/todoService";
+import { NewTodoDTO } from "../../../types/todoDTO";
 import { fromMinutesToString } from "../../../utils/helpers";
 
 interface IAddNewTodo {
@@ -10,19 +11,16 @@ interface IAddNewTodo {
   onTodoAdd: (todo: ToDo) => void;
 }
 
-async function saveTodo(name: string, totalTime: number, session: Session) {
-  const toDoDTO: TodoDTO = {
+async function saveTodo(
+  name: string,
+  totalTimeInSeconds: number,
+  session: Session
+) {
+  const toDoDTO: NewTodoDTO = {
     name,
-    totalTimeInSeconds: totalTime,
+    totalTimeInSeconds,
   };
-  const response = await fetch("/api/todo", {
-    method: "POST",
-    body: JSON.stringify(toDoDTO),
-    headers: {
-      Authorization: `Bearer ${session.token}`,
-    },
-  });
-  return await response.json();
+  return await TodosService.newTodo(toDoDTO, session);
 }
 
 const AddNewTodo = (props: IAddNewTodo) => {

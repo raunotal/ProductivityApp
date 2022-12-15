@@ -2,7 +2,7 @@
 import { ToDo } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import { TodoDTO } from "../../../types/todoDTO";
+import { NewTodoDTO } from "../../../types/todoDTO";
 import apiMiddleware, { Message } from "../../../service/apiMiddleware";
 
 const prisma = new PrismaClient();
@@ -14,7 +14,7 @@ const callback = async (
 ) => {
 
   if (req.method === "POST") {
-    const todoDTO: TodoDTO = JSON.parse(req.body);
+    const todoDTO: NewTodoDTO = JSON.parse(req.body);
     if (!todoDTO.name) {
       return res.status(400).json({ message: "No name" });
     }

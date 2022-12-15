@@ -1,7 +1,7 @@
 import { ToDo } from "@prisma/client";
 import { useState } from "react";
 import { StoragedTodo } from "../../../types/storagedTodo";
-import { TodoDTO } from "../../../types/todoDTO";
+import { NewTodoDTO } from "../../../types/todoDTO";
 import { UpdateTodoDTO } from "../../../types/updateTodoDTO";
 import { fromSecondsToString } from "../../../utils/helpers";
 import TodoRow from "./todoRow";
@@ -28,7 +28,9 @@ async function updateTodo(todo: UpdateTodoDTO) {
 
 const updateTodoHandler = (activeTodo: StoragedTodo) => {
   const currentTimestamp = Math.floor(Date.now() / 1000);
-  const todoTimestamp = Math.floor(new Date(activeTodo.activatedDateTime).getTime() / 1000);
+  const todoTimestamp = Math.floor(
+    new Date(activeTodo.activatedDateTime).getTime() / 1000
+  );
   const updatedTodo = {
     id: activeTodo.todo.id,
     sessionDuration: currentTimestamp - todoTimestamp,
@@ -39,28 +41,11 @@ const updateTodoHandler = (activeTodo: StoragedTodo) => {
 const TodosList = (props: TodoListProps) => {
   const { todos } = props;
   const [activeTodoId, setActiveTodoId] = useState(-1);
+
   const setActiveTodoItemHandler = (id: number) => {
     setActiveTodoId(id);
 
     if (id !== -1) {
-      const localStorageTodo = localStorage.getItem("active_todo");
-      if (localStorageTodo) {
-        const activeTodo: StoragedTodo = JSON.parse(localStorageTodo);
-        updateTodoHandler(activeTodo);
-      }
-      const activatedTodo = todos.find((t) => t.id === id)!;
-      const storageItem: StoragedTodo = {
-        todo: activatedTodo,
-        activatedDateTime: new Date(),
-      };
-      localStorage.setItem("active_todo", JSON.stringify(storageItem));
-    } else {
-      const localStorageTodo = localStorage.getItem("active_todo");
-      if (localStorageTodo) {
-        const activeTodo: StoragedTodo = JSON.parse(localStorageTodo);
-        updateTodoHandler(activeTodo);
-      }
-      localStorage.removeItem("active_todo");
     }
   };
 

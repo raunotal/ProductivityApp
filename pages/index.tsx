@@ -5,16 +5,14 @@ import { useState } from "react";
 import GenericLayout from "../components/layout/genericLayout";
 import Main from "../components/section/main/main";
 import Welcome from "../components/section/welcome/welcome";
+import TodosService from "../service/todoService";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   let todos = [];
 
   if (session?.token) {
-    const res = await fetch(`${process.env.HOST}/api/todo`, {
-      headers: new Headers({ Authorization: `Bearer ${session?.token}` }),
-    });
-    todos = await res.json();
+    todos = await TodosService.getTodos(session);
   }
 
   return {

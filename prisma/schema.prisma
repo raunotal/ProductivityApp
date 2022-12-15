@@ -13,8 +13,7 @@ datasource db {
 model ToDo {
   id Int @id @default(autoincrement())
   name String @db.VarChar(256)
-  totalTime Int 
-  progressInSeconds Int @default(0)
+  totalTimeInSeconds Int 
   userId String @db.VarChar(256)
   toDoLogs TodoLog[]
 }
