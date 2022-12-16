@@ -28,7 +28,6 @@ const apiMiddleware = async (
       headers.authorization!.replace("Bearer ", ""),
       process.env.JWT_SECRET!
     ) as SessionToken;
-    console.log("userId", userId)
     await callback(req, res, userId);
   } catch (e) {
     return res.status(400).json({ message: "Invalid request" });
