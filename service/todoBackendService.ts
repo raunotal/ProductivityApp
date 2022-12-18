@@ -3,10 +3,12 @@ import { TodoDTO, UpdateTodoDTO } from "../types/todoDTO";
 
 const getTodos = async (userId: string): Promise<TodoDTO[]> => {
   const result: TodoDTO[] = [];
+  const dateStartOfDay = new Date();
+  dateStartOfDay.setUTCHours(0, 0, 0, 0);
 
   const todos = await prisma.toDo.findMany({
     where: { userId },
-    include: { toDoLogs: true },
+    include: { toDoLogs: { where: { start: { gte: dateStartOfDay } } } },
   });
 
   for (const todo of todos) {

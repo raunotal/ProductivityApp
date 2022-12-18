@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const currentDate = new Date();
+  const tmpDate = new Date();
+  const currentDate = new Date(new Date().setDate(tmpDate.getDate() - 1));
 
   const todo1 = await prisma.toDo.create({
     data: {
@@ -22,7 +23,11 @@ async function main() {
 
   await prisma.todoLog.create({
     data: {
-      start: new Date(new Date().setHours(currentDate.getHours() - 1)),
+      start: new Date(
+        new Date(new Date().setHours(currentDate.getHours() - 1)).setDate(
+          tmpDate.getDate() - 1
+        )
+      ),
       end: currentDate,
       toDoId: todo1.id,
     },
@@ -51,22 +56,3 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-
-// export type TodoDTO = {
-//   id: number;
-//   name: string;
-//   totalTimeInSeconds: number;
-//   progressInSeconds: number;
-//   isRunning: number;
-// };
-
-// export type NewTodoDTO = {
-//   name: string;
-//   totalTimeInSeconds: number;
-// };
-
-// export type UpdateTodoDTO = {
-//   id: number;
-//   isRunning: boolean;
-//   dateTime: Date;
-// }
